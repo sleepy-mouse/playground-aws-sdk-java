@@ -21,7 +21,7 @@
  * limitations under the License.
  */
 
-package takechiyo.aws.java.sqs;
+package takechiyo.aws.java.v2.sqs;
 
 // snippet-start:[sqs.java2.sqs_example.import]
 

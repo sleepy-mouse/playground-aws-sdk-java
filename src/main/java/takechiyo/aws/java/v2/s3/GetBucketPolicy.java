@@ -1,11 +1,10 @@
-//snippet-sourcedescription:[DeleteBucketPolicy.java demonstrates how to delete a policy from an Amazon S3 bucket.]
+//snippet-sourcedescription:[GetBucketPolicy.java demonstrates how to get the bucket policy for an existing Amazon S3 bucket]
 //snippet-keyword:[SDK for Java 2.0]
 //snippet-keyword:[Code Sample]
 //snippet-service:[Amazon S3]
 //snippet-sourcetype:[full-example]
 //snippet-sourcedate:[2/6/2020]
 //snippet-sourceauthor:[scmacdon-aws]
-
 /*
 Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 This file is licensed under the Apache License, Version 2.0 (the "License").
@@ -16,32 +15,33 @@ This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
 CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
+package takechiyo.aws.java.v2.s3;
 
-package takechiyo.aws.java.s3;
-// snippet-start:[s3.java2.delete_bucket_policy.import]
+// snippet-start:[s3.java2.get_bucket_policy.import]
 
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.DeleteBucketPolicyRequest;
+import software.amazon.awssdk.services.s3.model.GetBucketPolicyRequest;
+import software.amazon.awssdk.services.s3.model.GetBucketPolicyResponse;
 import software.amazon.awssdk.services.s3.model.S3Exception;
-// snippet-end:[s3.java2.delete_bucket_policy.import]
+// snippet-end:[s3.java2.get_bucket_policy.import]
 
 /**
- * Delete a bucket policy from an existing S3 bucket.
+ * Gets the bucket policy from an existing S3 bucket.
  * <p>
  * This code expects that you have AWS credentials set up, as described here:
  * http://docs.aws.amazon.com/java-sdk/latest/developer-guide/setup-credentials.html
  */
 
-public class DeleteBucketPolicy {
+public class GetBucketPolicy {
     public static void main(String[] args) {
         final String USAGE = "\n" +
                 "Usage:\n" +
-                "    DeleteBucketPolicy <bucket>\n\n" +
+                "    GetBucketPolicy <bucket>\n\n" +
                 "Where:\n" +
-                "    bucket - the bucket to delete the policy from (i.e., bucket1)\n\n" +
+                "    bucket - the bucket to get the policy from.\n\n" +
                 "Example:\n" +
-                "    bucket1\n\n";
+                "    GetBucketPolicy bucket1\n\n";
 
         if (args.length < 1) {
             System.out.println(USAGE);
@@ -49,31 +49,34 @@ public class DeleteBucketPolicy {
         }
 
         String bucketName = args[0];
-        System.out.format("Deleting policy from bucket: \"%s\"\n\n", bucketName);
+        System.out.format("Getting policy for bucket: \"%s\"\n\n", bucketName);
 
-        //Create a S3Client object
         Region region = Region.US_WEST_2;
-        S3Client s3 = S3Client.builder().region(region).build();
+        S3Client s3 = S3Client.builder()
+                .region(region)
+                .build();
 
-        //Delete the bucket policy
-        deleteS3BucketPolicy(s3, bucketName);
+        String polText = getPolicy(s3, bucketName);
+        System.out.println("Policy Text: " + polText);
     }
 
-    // snippet-start:[s3.java2.delete_bucket_policy.main]
-    public static void deleteS3BucketPolicy(S3Client s3, String bucketName) {
-        //Create a DeleteBucketPolicyRequest object
-        DeleteBucketPolicyRequest delReq = DeleteBucketPolicyRequest.builder()
+    // snippet-start:[s3.java2.get_bucket_policy.main]
+    public static String getPolicy(S3Client s3, String bucketName) {
+        String policyText;
+        System.out.format("Getting policy for bucket: \"%s\"\n\n", bucketName);
+
+        GetBucketPolicyRequest policyReq = GetBucketPolicyRequest.builder()
                 .bucket(bucketName)
                 .build();
         try {
-            s3.deleteBucketPolicy(delReq);
-            System.out.println("Done!");
-
-            //response.responseMetadata()
+            GetBucketPolicyResponse policyRes = s3.getBucketPolicy(policyReq);
+            policyText = policyRes.policy();
+            return policyText;
         } catch (S3Exception e) {
             System.err.println(e.awsErrorDetails().errorMessage());
             System.exit(1);
         }
+        return "";
     }
+// snippet-end:[s3.java2.get_bucket_policy.main]
 }
-// snippet-end:[s3.java2.delete_bucket_policy.main]

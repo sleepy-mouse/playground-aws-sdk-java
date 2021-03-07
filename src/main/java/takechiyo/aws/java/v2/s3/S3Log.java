@@ -1,4 +1,4 @@
-package takechiyo.aws.java.s3;
+package takechiyo.aws.java.v2.s3;
 
 // snippet-start:[s3.java2.logging.complete]
 // snippet-start:[s3.java2.logging.import]

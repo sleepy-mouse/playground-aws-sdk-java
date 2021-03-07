@@ -17,7 +17,7 @@
    specific language governing permissions and limitations under the License.
 */
 
-package takechiyo.aws.java.s3;
+package takechiyo.aws.java.v2.s3;
 
 // snippet-start:[s3.java2.delete_website_configuration.import]
 

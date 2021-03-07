@@ -20,7 +20,7 @@
  * limitations under the License.
  */
 // snippet-start:[sqs.java2.long_polling.complete]
-package takechiyo.aws.java.sqs;
+package takechiyo.aws.java.v2.sqs;
 
 // snippet-start:[sqs.java2.long_polling.import]
 

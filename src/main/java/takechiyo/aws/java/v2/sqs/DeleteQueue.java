@@ -1,4 +1,4 @@
-//snippet-sourcedescription:[SendMessages.java demonstrates how to send messages to a queue.]
+//snippet-sourcedescription:[DeleteQueue.java demonstrates how to delete an Amazon SQS queue.]
 //snippet-keyword:[SDK for Java 2.0]
 //snippet-keyword:[Code Sample]
 //snippet-service:[Amazon Simple Queue Service]
@@ -20,54 +20,47 @@
  * License for the specific language governing permissions and
  * limitations under the License.
  */
-// snippet-start:[sqs.java2.send_recieve_messages.import]
-package takechiyo.aws.java.sqs;
+
+// snippet-start:[sqs.java2.long_polling.complete]
+package takechiyo.aws.java.v2.sqs;
+
+// snippet-start:[sqs.java2.sqs_example.delete_queue.import]
 
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsClient;
-import software.amazon.awssdk.services.sqs.model.CreateQueueRequest;
-import software.amazon.awssdk.services.sqs.model.CreateQueueResponse;
+import software.amazon.awssdk.services.sqs.model.DeleteQueueRequest;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlRequest;
 import software.amazon.awssdk.services.sqs.model.QueueNameExistsException;
-import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
-// snippet-end:[sqs.java2.send_recieve_messages.import]
 
-
-public class SendMessages {
-
+// snippet-end:[sqs.java2.sqs_example.delete_queue.import]
+public class DeleteQueue {
 
     public static void main(String[] args) {
 
         final String USAGE = "\n" +
-                "SendMessages - send a message\n\n" +
-                "Usage: SendMessages <queueName> <message>\n\n" +
+                "DeleteQueue - delete a queue\n\n" +
+                "Usage: DeleteQueue <queueName>\n\n" +
                 "Where:\n" +
-                "  queueName - the name of the queue\n\n" +
-                "  message - the message to send\n\n";
+                "  queueName - the name of the queue\n\n";
 
-        if (args.length < 2) {
+        if (args.length < 1) {
             System.out.println(USAGE);
             System.exit(1);
         }
 
-        SqsClient sqsClient = SqsClient.builder()
+        String queueName = args[0];
+
+        SqsClient sqs = SqsClient.builder()
                 .region(Region.US_WEST_2)
                 .build();
 
-        String queueName = args[0];
-        String message = args[1];
-
-        sendMessage(sqsClient, queueName, message);
+        deleteSQSQueue(sqs, queueName);
     }
 
-    // snippet-start:[sqs.java2.send_recieve_messages.main]
-    public static void sendMessage(SqsClient sqsClient, String queueName, String message) {
+    // snippet-start:[sqs.java2.sqs_example.delete_queue]
+    public static void deleteSQSQueue(SqsClient sqsClient, String queueName) {
 
         try {
-            CreateQueueRequest request = CreateQueueRequest.builder()
-                    .queueName(queueName)
-                    .build();
-            CreateQueueResponse createResult = sqsClient.createQueue(request);
 
             GetQueueUrlRequest getQueueRequest = GetQueueUrlRequest.builder()
                     .queueName(queueName)
@@ -75,16 +68,17 @@ public class SendMessages {
 
             String queueUrl = sqsClient.getQueueUrl(getQueueRequest).queueUrl();
 
-            SendMessageRequest sendMsgRequest = SendMessageRequest.builder()
+            DeleteQueueRequest deleteQueueRequest = DeleteQueueRequest.builder()
                     .queueUrl(queueUrl)
-                    .messageBody(message)
-                    .delaySeconds(5)
                     .build();
-            sqsClient.sendMessage(sendMsgRequest);
+
+            sqsClient.deleteQueue(deleteQueueRequest);
 
         } catch (QueueNameExistsException e) {
-            throw e;
+            e.printStackTrace();
+            System.exit(1);
         }
+        // snippet-end:[sqs.java2.sqs_example.delete_queue]
     }
 }
-// snippet-end:[sqs.java2.send_recieve_messages.main]
+// snippet-end:[sqs.java2.long_polling.complete]

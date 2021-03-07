@@ -20,15 +20,12 @@
  * limitations under the License.
  */
 
-package takechiyo.aws.java.s3;
+package takechiyo.aws.java.v2.s3;
 // snippet-start:[s3.java2.s3_bucket_ops.complete]
 // snippet-start:[s3.java2.s3_bucket_ops.import]
 
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.CreateBucketConfiguration;
-import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
-import software.amazon.awssdk.services.s3.model.DeleteBucketRequest;
 import software.amazon.awssdk.services.s3.model.ListBucketsRequest;
 import software.amazon.awssdk.services.s3.model.ListBucketsResponse;
 

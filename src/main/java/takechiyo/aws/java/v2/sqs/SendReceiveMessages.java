@@ -21,7 +21,7 @@
  * limitations under the License.
  */
 // snippet-start:[sqs.java2.send_recieve_messages.import]
-package takechiyo.aws.java.sqs;
+package takechiyo.aws.java.v2.sqs;
 
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsClient;
