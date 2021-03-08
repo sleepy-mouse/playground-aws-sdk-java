@@ -23,56 +23,30 @@ package takechiyo.aws.java.v2.s3;
 
 // snippet-start:[s3.java2.list_objects.import]
 
-import software.amazon.awssdk.regions.Region;
+import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
-import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
 import software.amazon.awssdk.services.s3.model.S3Exception;
-import software.amazon.awssdk.services.s3.model.S3Object;
-
-import java.util.List;
-import java.util.ListIterator;
 // snippet-end:[s3.java2.list_objects.import]
 
+@Slf4j
 public class ListObjects {
-
-    public static void main(String[] args) {
-
-        if (args.length < 1) {
-            System.out.println("Please specify a bucket name");
-            System.exit(1);
-        }
-
-        String bucketName = args[0];
-        Region region = Region.US_WEST_2;
-        S3Client s3 = S3Client.builder()
-                .region(region)
-                .build();
-
-        listBucketObjects(s3, bucketName);
-    }
-
     // snippet-start:[s3.java2.list_objects.main]
     public static void listBucketObjects(S3Client s3, String bucketName) {
-
         try {
-            ListObjectsRequest listObjects = ListObjectsRequest
+            var listObjects = ListObjectsRequest
                     .builder()
                     .bucket(bucketName)
                     .build();
-
-            ListObjectsResponse res = s3.listObjects(listObjects);
-            List<S3Object> objects = res.contents();
-
-            for (ListIterator iterVals = objects.listIterator(); iterVals.hasNext(); ) {
-                S3Object myValue = (S3Object) iterVals.next();
-                System.out.print("\n The name of the key is " + myValue.key());
-                System.out.print("\n The object is " + calKb(myValue.size()) + " KBs");
-                System.out.print("\n The owner is " + myValue.owner());
+            var res = s3.listObjects(listObjects);
+            var objects = res.contents();
+            for (var object : objects) {
+                log.info("\n The name of the key is " + object.key());
+                log.info("\n The object is " + calKb(object.size()) + " KBs");
+                log.info("\n The owner is " + object.owner());
             }
         } catch (S3Exception e) {
-            System.err.println(e.awsErrorDetails().errorMessage());
-            System.exit(1);
+            log.error("", e);
         }
     }
 
