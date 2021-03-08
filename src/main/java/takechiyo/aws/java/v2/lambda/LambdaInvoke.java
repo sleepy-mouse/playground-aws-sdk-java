@@ -20,6 +20,7 @@ package takechiyo.aws.java.v2.lambda;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.lambda.LambdaClient;
+import software.amazon.awssdk.services.lambda.model.InvocationType;
 import software.amazon.awssdk.services.lambda.model.InvokeRequest;
 import software.amazon.awssdk.services.lambda.model.LambdaException;
 // snippet-end:[lambda.java2.invoke.import]
@@ -44,6 +45,7 @@ public class LambdaInvoke {
             var request = InvokeRequest.builder()
                     .functionName(functionName)
                     .payload(payload)
+                    .invocationType(InvocationType.DRY_RUN)
                     .build();
 
             //Invoke the Lambda function
