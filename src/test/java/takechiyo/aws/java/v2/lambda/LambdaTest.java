@@ -8,6 +8,7 @@ import takechiyo.aws.java.v2.BaseSdkTest;
 
 class LambdaTest extends BaseSdkTest<LambdaClient, LambdaClientBuilder> {
     @BeforeEach
+    @Override
     public void setUp() {
         builder = LambdaClient.builder();
     }

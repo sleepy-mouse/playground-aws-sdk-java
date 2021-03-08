@@ -24,4 +24,6 @@ public abstract class BaseSdkTest<C extends SdkClient, B extends AwsClientBuilde
             testCaseBody.accept(client);
         }
     }
+
+    public abstract void setUp();
 }
