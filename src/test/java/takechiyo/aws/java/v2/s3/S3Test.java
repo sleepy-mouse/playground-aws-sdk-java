@@ -6,7 +6,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3ClientBuilder;
 import takechiyo.aws.java.v2.BaseSdkTest;
 
-class ListObjectsTest extends BaseSdkTest<S3Client, S3ClientBuilder> {
+class S3Test extends BaseSdkTest<S3Client, S3ClientBuilder> {
     @BeforeEach
     @Override
     public void setUp() {
