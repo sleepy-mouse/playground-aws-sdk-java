@@ -19,7 +19,22 @@ public class DynamodbTest extends BaseSdkTest<DynamoDbClient, DynamoDbClientBuil
     public void listTables() {
         run(c -> {
             var tableNames = DynamoDbSample.listTables(c);
-            tableNames.forEach(log::info);
+            tableNames.forEach(this::i);
+        });
+    }
+
+    @Test
+    void queryTable() {
+        String tableName = "";
+        String partitionKeyName = "";
+        String partitionKeyVal = "";
+        String partitionAlias = "";
+        run(c -> {
+            var result = DynamoDbSample.queryTable(c, tableName, partitionKeyName, partitionKeyVal, partitionAlias);
+            result.ifPresent(res -> {
+                i(String.valueOf(res.count()));
+                i(res.toString());
+            });
         });
     }
 }
